@@ -26,7 +26,7 @@ class Book:
 
 class Library:
     def __init__(self):
-        self._books = []  # Change this to _books (private attribute)
+        self._books = []
 
     def add_book(self, book):
         self._books.append(book)
@@ -36,6 +36,10 @@ class Library:
 
     def list_books(self):
         return self._books
+
+    def list_available_books(self):
+        """Return a list of available books (not checked out)"""
+        return [book for book in self._books if not book.is_checked_out]
 
     def check_out_book(self, isbn):
         """Check out a book by ISBN"""
