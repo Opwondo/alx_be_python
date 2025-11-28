@@ -3,47 +3,50 @@ class Book:
         self.title = title
         self.author = author
         self.isbn = isbn
-        self.available = True  # REQUIRED: autograder looks for "True"
+        self.is_checked_out = False
 
     def check_out(self):
-        """Check out the book if available."""
-        if self.available:
-            self.available = False
-            return True  # REQUIRED: autograder checks for "True"
+        """Check out the book if it's available"""
+        if not self.is_checked_out:
+            self.is_checked_out = True
+            return True
         return False
 
     def return_book(self):
-        """Return the book."""
-        self.available = True
-        return True  # REQUIRED
+        """Return the book if it was checked out"""
+        if self.is_checked_out:
+            self.is_checked_out = False
+            return True
+        return False
 
     def __str__(self):
-        return f"{self.title} by {self.author} (ISBN: {self.isbn})"
+        status = "checked out" if self.is_checked_out else "available"
+        return f"{self.title} by {self.author} (ISBN: {self.isbn}) - {status}"
 
 
 class Library:
     def __init__(self):
-        self.books = []
+        self._books = []  # Change this to _books (private attribute)
 
     def add_book(self, book):
-        self.books.append(book)
+        self._books.append(book)
 
     def remove_book(self, isbn):
-        self.books = [b for b in self.books if b.isbn != isbn]
+        self._books = [b for b in self._books if b.isbn != isbn]
 
     def list_books(self):
-        return self.books
+        return self._books
 
     def check_out_book(self, isbn):
-        """Check out book by ISBN."""
-        for book in self.books:
+        """Check out a book by ISBN"""
+        for book in self._books:
             if book.isbn == isbn:
                 return book.check_out()
         return False
 
     def return_book(self, isbn):
-        """Return book by ISBN."""
-        for book in self.books:
+        """Return a book by ISBN"""
+        for book in self._books:
             if book.isbn == isbn:
                 return book.return_book()
         return False
